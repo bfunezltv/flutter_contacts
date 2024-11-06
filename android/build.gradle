@@ -25,7 +25,7 @@ android {
     compileSdkVersion 34
 
     if (project.android.hasProperty("namespace")) {
-        namespace 'flutter.plugins.contactsservice'
+        namespace 'flutter.plugins.contactsservice.contactsservice'
     }
 
     defaultConfig {
