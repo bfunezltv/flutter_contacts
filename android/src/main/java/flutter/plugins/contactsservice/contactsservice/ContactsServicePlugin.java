@@ -65,16 +65,6 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
   private final ExecutorService executor =
           new ThreadPoolExecutor(0, 10, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000));
 
-  private void initDelegateWithRegister(Registrar registrar) {
-    this.delegate = new ContactServiceDelegateOld(registrar);
-  }
-
-  public static void registerWith(Registrar registrar) {
-    ContactsServicePlugin instance = new ContactsServicePlugin();
-    instance.initInstance(registrar.messenger(), registrar.context());
-    instance.initDelegateWithRegister(registrar);
-  }
-
   private void initInstance(BinaryMessenger messenger, Context context) {
     methodChannel = new MethodChannel(messenger, "github.com/clovisnicolas/flutter_contacts");
     methodChannel.setMethodCallHandler(this);
@@ -373,24 +363,6 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
       } else {
         result.success(FORM_COULD_NOT_BE_OPEN);
       }
-  }
-  
-  private class ContactServiceDelegateOld extends BaseContactsServiceDelegate {
-    private final PluginRegistry.Registrar registrar;
-
-    ContactServiceDelegateOld(PluginRegistry.Registrar registrar) {
-      this.registrar = registrar;
-      registrar.addActivityResultListener(this);
-    }
-
-    @Override
-    void startIntent(Intent intent, int request) {
-      if (registrar.activity() != null) {
-        registrar.activity().startActivityForResult(intent, request);
-      } else {
-        registrar.context().startActivity(intent);
-      }
-    }
   }
 
   private class ContactServiceDelegate extends BaseContactsServiceDelegate {
